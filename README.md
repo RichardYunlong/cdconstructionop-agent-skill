@@ -125,7 +125,7 @@ asyncio.run(run_example())
 ```bash
 python tests/test_skill.py
 # 或
-python main.py
+python tests\ui_main.py
 ```
 - 在项目中集成使用
 ```python
