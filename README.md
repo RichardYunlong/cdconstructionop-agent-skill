@@ -174,7 +174,6 @@ cdconstructionop-agent-skill/
 - 数据真实性📌：文档中的网络链接仅为示例，实际应用需替换为真实信息源
 - 结果验证🔍：商机分析结果仅供参考，重要决策建议进一步调研验证
 - 版本兼容✅：请确保使用指定版本的 Python 和依赖包以保证功能正常
-<<<<<<< HEAD
 
 # 建筑行业新商机分析 Agent Skill
 
@@ -312,5 +311,3 @@ cdconstructionop-agent-skill/
 ## 📄 许可证
 
 本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情
-=======
->>>>>>> 934d84e89ab021b35f4512d05965b6c0e805954f
