@@ -3,8 +3,16 @@
 """
 import sys
 import os
+
+# 添加项目根目录到Python路径
+sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
+
 # 添加src目录到Python路径，以便能够导入模块
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+
+# 加载环境变量
+from src.env_loader import load_env_file
+load_env_file()
 
 from core import OpportunityAnalysisInput, analyze_opportunities
 

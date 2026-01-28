@@ -78,7 +78,7 @@ async def search_for_construction_opportunities(construction_direction: str, cus
     return search_results[:5]  # 返回前5个结果
 
 
-async def analyze_opportunities(input_data: OpportunityAnalysisInput) -> OpportunityAnalysisOutput:
+async def analyze_opportunities(input_data: OpportunityAnalysisInput, use_mock_data: bool = True) -> OpportunityAnalysisOutput:
     """
     分析建筑行业新商机
     根据建筑方向、客户类型和商机状态生成5个潜在客户分析
@@ -107,6 +107,10 @@ async def analyze_opportunities(input_data: OpportunityAnalysisInput) -> Opportu
                 marketing_plan=item.get("marketing_plan", "暂无营销方案")
             ))
         return OpportunityAnalysisOutput(opportunities=opportunities)
+    
+    # 如果不允许使用模拟数据，直接抛出异常
+    if not use_mock_data:
+        raise Exception("大模型调用失败，且不允许使用模拟数据")
     
     # 如果大模型调用失败或返回结果不足，使用原有逻辑
     # 搜索相关机会

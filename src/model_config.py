@@ -37,7 +37,7 @@ class ModelConfig:
         
         # 百川配置
         self.baichuan_api_key = os.getenv("BAICHUAN_API_KEY", "")
-        self.baichuan_base_url = os.getenv("BAICHUAN_API_KEY", "https://api.baichuan-ai.com/v1")
+        self.baichuan_base_url = os.getenv("BAICHUAN_BASE_URL", "https://api.baichuan-ai.com/v1")
         
         # 智谱AI配置
         self.zhipu_api_key = os.getenv("ZHIPU_API_KEY", "")
@@ -56,7 +56,7 @@ class ModelConfig:
         self.minimax_base_url = os.getenv("MINIMAX_BASE_URL", "https://api.minimaxi.chat/v1")
         
         # 默认使用模型
-        self.default_model = os.getenv("DEFAULT_MODEL", "qwen-max")
+        self.default_model = os.getenv("DEFAULT_MODEL", "qwen-plus")
         
         # 默认配置
         self.current_model_type = ModelType(os.getenv("CURRENT_MODEL_TYPE", "qwen"))

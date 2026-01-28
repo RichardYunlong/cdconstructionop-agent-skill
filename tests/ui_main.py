@@ -110,19 +110,23 @@ async def run_analysis(construction_direction, customer_type, business_status):
         business_status=business_status
     )
 
-    # 异步调用分析函数
-    result = await analyze_opportunities(input_data)
-    
-    # 输出结果
-    print(f"\n找到 {len(result.opportunities)} 个潜在商机:")
-    print("=" * 60)
-    for i, opportunity in enumerate(result.opportunities, 1):
-        print(f"\n{i}. 公司名称: {opportunity.company_name}")
-        print(f"   项目信息: {opportunity.project_info}")
-        print(f"   证明信息: {opportunity.proof_info}")
-        print(f"   推断信息: {opportunity.inferred_info}")
-        print(f"   营销方案: {opportunity.marketing_plan}")
-        print("-" * 60)
+    try:
+        # 异步调用分析函数，不允许使用模拟数据
+        result = await analyze_opportunities(input_data, use_mock_data=False)
+        
+        # 输出结果
+        print(f"\n找到 {len(result.opportunities)} 个潜在商机:")
+        print("=" * 60)
+        for i, opportunity in enumerate(result.opportunities, 1):
+            print(f"\n{i}. 公司名称: {opportunity.company_name}")
+            print(f"   项目信息: {opportunity.project_info}")
+            print(f"   证明信息: {opportunity.proof_info}")
+            print(f"   推断信息: {opportunity.inferred_info}")
+            print(f"   营销方案: {opportunity.marketing_plan}")
+            print("-" * 60)
+    except Exception as e:
+        print(f"\n❌ 错误: {str(e)}")
+        print("提示: 请检查您的API密钥配置和网络连接，确保大模型服务正常可用。")
 
 
 async def main():

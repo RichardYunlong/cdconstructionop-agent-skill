@@ -4,6 +4,7 @@
 """
 import json
 import httpx
+import re
 from typing import Dict, Any, List, Optional
 from pydantic import BaseModel
 
@@ -31,6 +32,10 @@ class LLMClient:
         """
         if not self.config["api_key"]:
             raise ValueError(f"API Key未配置，请设置对应的环境变量")
+        
+        # 打印当前使用的大模型信息
+        current_model = model or self.config["default_model"]
+        print(f"正在使用大模型: {current_model}，API端点: {self.config['base_url']}")
             
         headers = {
             "Authorization": f"Bearer {self.config['api_key']}",
@@ -38,13 +43,14 @@ class LLMClient:
         }
         
         data = {
-            "model": model or self.config["default_model"],
+            "model": current_model,
             "messages": messages,
             "temperature": temperature,
             "max_tokens": max_tokens
         }
         
-        async with httpx.AsyncClient(timeout=30.0) as client:
+        # 增加超时时间，因为复杂请求可能需要更多时间
+        async with httpx.AsyncClient(timeout=60.0) as client:
             try:
                 response = await client.post(
                     f"{self.config['base_url']}/chat/completions",
@@ -56,7 +62,12 @@ class LLMClient:
                     raise Exception(f"API请求失败: {response.status_code}, {response.text}")
                 
                 result = response.json()
-                return result["choices"][0]["message"]["content"]
+                content = result["choices"][0]["message"]["content"]
+                
+                # 处理URL格式，将URL放在【】符号之间
+                formatted_content = self._format_urls(content)
+                
+                return formatted_content
                 
             except httpx.ConnectError:
                 raise Exception("连接到API服务器失败，请检查网络连接和API地址")
@@ -64,6 +75,23 @@ class LLMClient:
                 raise Exception("API请求超时，请稍后重试")
             except Exception as e:
                 raise e
+
+    def _format_urls(self, text: str) -> str:
+        """
+        将文本中的URL放入【】符号之间
+        """
+        # 优化的URL正则表达式，支持更多URL格式
+        url_pattern = r'https?://(?:[-\w.]+(?:\.[a-zA-Z]{2,})?)(?:[:\d]+)?(?:/(?:[\w/_.-]*[a-zA-Z0-9])?(?:\?(?:[\w&=%.:-]*)?)?(?:#(?:[\w.-]*)?)?)?'
+        
+        def replace_url(match):
+            # 获取完整的URL匹配结果
+            full_url = match.group(0)
+            # 确保URL以【】包裹
+            return f"【{full_url}】"
+        
+        # 使用re.sub进行替换，确保所有URL都被正确处理
+        formatted_text = re.sub(url_pattern, replace_url, text)
+        return formatted_text
 
 
 class ConstructionOpportunityGenerator:
@@ -92,6 +120,10 @@ class ConstructionOpportunityGenerator:
         ]
         
         try:
+            # 打印当前使用的大模型信息
+            current_model = self.llm_client.config["default_model"]
+            print(f"正在调用大模型生成商机分析，当前使用模型: {current_model}")
+            
             # 调用大模型
             response = await self.llm_client.call_llm(messages, temperature=0.7)
             

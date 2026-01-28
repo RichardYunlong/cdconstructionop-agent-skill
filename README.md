@@ -77,7 +77,7 @@ python tests/test_skill.py
 ```
 测试脚本包含多个预设场景，可立即查看分析效果👀。
 ### 方法二：交互式使用示例
-```python
+``python
 from main import OpportunityAnalysisInput, analyze_opportunities
 import asyncio
 
@@ -174,3 +174,140 @@ cdconstructionop-agent-skill/
 - 数据真实性📌：文档中的网络链接仅为示例，实际应用需替换为真实信息源
 - 结果验证🔍：商机分析结果仅供参考，重要决策建议进一步调研验证
 - 版本兼容✅：请确保使用指定版本的 Python 和依赖包以保证功能正常
+
+# 建筑行业新商机分析 Agent Skill
+
+<div align="center">
+
+### 🚀 让AI为你挖掘建筑行业的潜在商机
+
+[![Python Version](https://img.shields.io/badge/python-3.7%2B-blue)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+
+</div>
+
+---
+
+## 📋 项目概述
+
+建筑行业新商机分析 Agent Skill 是一款基于AI的智能分析工具，专为建筑行业的销售团队和商务拓展人员设计。该工具利用大语言模型的强大分析能力，帮助用户快速识别潜在客户、分析商机信息，并制定精准的营销策略。
+
+## 🎯 核心功能
+
+- **智能商机发现**: 基于建筑方向、客户类型、商机状态等维度，智能分析潜在商业机会
+- **客户画像分析**: 提供详细的客户背景、项目信息及市场动态
+- **营销策略生成**: 针对不同客户类型和商机状态，生成定制化的营销策略
+- **多模型支持**: 支持国内主流大模型平台（通义千问、ChatGLM、Doubao、Moonshot、MiniMax等）
+- **实时信息验证**: 结合网络搜索，提供最新的项目动态和客户信息
+
+## 🛠️ 技术架构
+
+- **编程语言**: Python 3.7+
+- **框架**: Pydantic（数据验证）、HTTPX（网络请求）
+- **大模型**: 支持多种主流大模型平台
+- **数据格式**: JSON
+- **并发处理**: AsyncIO
+
+## 📦 依赖要求
+
+- Python >= 3.7
+- pydantic
+- aiohttp
+- httpx
+
+## 🚀 快速开始
+
+### 环境准备
+
+1. **克隆项目**
+   ```bash
+   git clone <repository-url>
+   cd cdconstructionop-agent-skill
+   ```
+
+2. **创建虚拟环境**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # Linux/Mac
+   venv\Scripts\activate     # Windows
+   ```
+
+3. **安装依赖**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **配置环境变量**
+   ```bash
+   cp .env.example .env
+   ```
+   编辑 `.env` 文件，填入相应的大模型API密钥
+
+### 配置说明
+
+项目支持多种大模型平台，可通过环境变量进行配置：
+
+- `QWEN_API_KEY`: 通义千问API密钥
+- `ZHIPU_API_KEY`: ChatGLM API密钥
+- `DOUBAO_API_KEY`: Doubao API密钥
+- `MOONSHOT_API_KEY`: Moonshot API密钥
+- `MINIMAX_API_KEY`: MiniMax API密钥
+
+## 🔧 大模型连接测试
+
+您可以使用内置的测试脚本来验证大模型连接性：
+
+```bash
+python -m tests.test_llm_connection
+```
+
+或者直接运行测试文件：
+
+```bash
+cd tests
+python test_llm_connection.py
+```
+
+此脚本将：
+- 验证当前模型配置
+- 测试大模型API连接
+- 展示大模型响应内容
+- 测试URL格式化功能
+
+## 📂 项目结构
+
+```
+cdconstructionop-agent-skill/
+├── main.py                    # 项目主入口文件 🏁
+├── config.json               # Agent Skill 配置文件 ⚙️
+├── requirements.txt          # Python 依赖包列表 📦
+├── .env.example             # 环境变量配置模板 📄
+├── .env                     # 环境变量配置文件（需手动创建） 🔐
+├── README.md                # 项目说明文档 📖
+├── src/                     # 源代码目录 💻
+│   ├── core.py              # 核心分析逻辑实现 🧠
+│   ├── utils.py             # 工具模块（网络搜索、信息验证） 🔧
+│   ├── model_config.py      # 大模型配置管理 ⚙️
+│   ├── llm_client.py        # 大模型客户端（支持多平台） 🌐
+│   └── env_loader.py        # 环境变量加载工具 🛠️
+├── tests/                   # 测试代码目录 🧪
+│   ├── test_skill.py        # 功能测试文件 ✅
+│   └── test_llm_connection.py # 大模型连接测试工具 🔧
+└── venv/                    # Python 虚拟环境目录 🐍
+```
+
+## ⚠️ 重要注意事项
+
+- 项目定位🎯：本项目为 AI Agent Skill 的标准结构实现，适用于快速原型开发
+- API 依赖🔑：实际部署需配置有效的大模型 API 密钥以获得准确分析结果
+- 数据真实性📌：文档中的网络链接仅为示例，实际应用需替换为真实信息源
+- 结果验证🔍：商机分析结果仅供参考，重要决策建议进一步调研验证
+- 版本兼容✅：请确保使用指定版本的 Python 和依赖包以保证功能正常
+
+## 📞 支持与反馈
+
+如遇到问题或有改进建议，欢迎提交 Issue 或 Pull Request。
+
+## 📄 许可证
+
+本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情
