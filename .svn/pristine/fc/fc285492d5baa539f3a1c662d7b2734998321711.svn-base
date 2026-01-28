@@ -1,0 +1,256 @@
+# 建筑行业新商机分析 Agent Skill
+
+## 项目概述
+
+本项目是一个AI Agent Skill，用于分析建筑行业的新商机。根据用户指定的建筑方向、客户类型和商机状态，生成包含5个潜在客户或合作伙伴的详细分析报告。
+
+## 功能特点
+
+- 支持多种建筑方向分析（结构工程、岩土工程、桥梁与隧道工程等）
+- 覆盖各类客户类型（行政机关、事业单位、央企、国企等）
+- 提供不同商机状态下的针对性建议（意向阶段、争夺阶段、竞标阶段等）
+- 每个商机包含项目信息、证明材料、推断依据和营销方案
+
+## 环境配置
+
+```bash
+# 创建虚拟环境
+python -m venv venv
+
+# 激活环境
+# Windows
+venv\Scripts\activate
+# Linux/macOS
+source venv/bin/activate
+
+# 安装依赖
+pip install -r requirements.txt
+```
+
+## 环境变量配置
+
+为了使用大模型API，您需要配置环境变量。请按以下步骤操作：
+
+1. 复制 `.env.example` 文件为 `.env`：
+   ```bash
+   # Windows
+   copy .env.example .env
+   # Linux/macOS
+   cp .env.example .env
+   ```
+
+2. 编辑 `.env` 文件，填入相应的大模型API密钥：
+   ```bash
+   # Windows
+   notepad .env
+   # Linux/macOS
+   nano .env
+   ```
+
+3. 根据您要使用的大模型服务商，填写相应的API密钥和配置项。
+
+4. 在项目启动时，环境变量会自动加载。
+
+## 大模型配置
+
+本项目支持国内主流大模型，您可以通过设置环境变量来配置使用的大模型：
+
+### 支持的大模型
+
+- 通义千问（Qwen）
+- 智谱AI（ChatGLM）
+- 字节跳动豆包（Doubao）
+- 月之暗面（Moonshot）
+- MiniMax
+
+### 配置示例
+
+#### 通义千问配置
+```bash
+export QWEN_API_KEY="your_qwen_api_key"
+export CURRENT_MODEL_TYPE="qwen"
+export DEFAULT_MODEL="qwen-max"
+```
+
+#### 智谱AI配置
+```bash
+export ZHIPU_API_KEY="your_zhipu_api_key"
+export CURRENT_MODEL_TYPE="zhipu"
+export DEFAULT_MODEL="glm-4"
+```
+
+#### 月之暗面配置
+```bash
+export MOONSHOT_API_KEY="your_moonshot_api_key"
+export CURRENT_MODEL_TYPE="moonshot"
+export DEFAULT_MODEL="moonshot-v1-8k"
+```
+
+## 试用方法
+
+### 方法一：使用测试脚本快速体验
+
+```bash
+# 运行测试脚本查看示例结果
+python -m pytest tests/ -v
+# 或者直接运行测试文件
+python tests/test_skill.py
+```
+
+测试脚本中包含多个预设场景，可以直接运行查看效果。
+
+### 方法二：交互式使用
+
+```python
+from main import OpportunityAnalysisInput, analyze_opportunities
+import asyncio
+
+# 创建输入对象，指定建筑方向、客户类型和商机状态
+input_data = OpportunityAnalysisInput(
+    construction_direction="市政工程",      # 建筑方向
+    customer_type="国企",                  # 客户类型
+    business_status="意向阶段"              # 商机状态
+)
+
+# 异步调用分析函数
+async def run_example():
+    result = await analyze_opportunities(input_data)
+    
+    # 输出结果
+    print(f"找到 {len(result.opportunities)} 个潜在商机:")
+    for i, opportunity in enumerate(result.opportunities, 1):
+        print(f"\n{i}. 公司名称: {opportunity.company_name}")
+        print(f"   项目信息: {opportunity.project_info}")
+        print(f"   证明信息: {opportunity.proof_info}")
+        print(f"   推断信息: {opportunity.inferred_info}")
+        print(f"   营销方案: {opportunity.marketing_plan}")
+
+# 运行示例
+asyncio.run(run_example())
+```
+
+### 方法三：自定义参数体验
+
+您可以根据需要更改以下参数组合来体验不同的分析结果：
+
+- 建筑方向选项：
+  - 结构工程、岩土工程、桥梁与隧道工程
+  - 道路与铁道工程、市政工程、水利工程
+  - 或自定义方向（100字内）
+
+- 客户类型选项：
+  - 行政机关、事业单位、央企、国企
+  - 上市公司、民营企业
+  - 或自定义类型（100字内）
+
+- 商机状态选项：
+  - 意向阶段、争夺阶段、竞标阶段
+  - 废标重启、成果扩大
+  - 或自定义状态（100字内）
+
+## 输入参数
+
+- `construction_direction`: 建筑方向，可选值包括：
+  - 结构工程
+  - 岩土工程
+  - 桥梁与隧道工程
+  - 道路与铁道工程
+  - 市政工程
+  - 水利工程
+  - 自定义内容（100字内）
+
+- `customer_type`: 客户类型，可选值包括：
+  - 行政机关
+  - 事业单位
+  - 央企
+  - 国企
+  - 上市公司
+  - 民营企业
+  - 自定义内容（100字内）
+
+- `business_status`: 商机状态，可选值包括：
+  - 意向阶段
+  - 争夺阶段
+  - 竞标阶段
+  - 废标重启
+  - 成果扩大
+  - 自定义内容（100字内）
+
+## 输出结果
+
+返回包含5个商机信息的对象数组，每个商机包含：
+
+- `company_name`: 公司名称
+- `project_info`: 项目信息（50字内）
+- `proof_info`: 证明信息（含网站公告、招标信息等，255字内）
+- `inferred_info`: 推断的商机信息（255字内）
+- `marketing_plan`: 营销方案（255字内）
+
+## 使用方法
+
+### 直接运行测试
+
+```bash
+python tests/test_skill.py
+或
+python main.py
+```
+### 演示示例
+.\\demosee.md
+
+### 在代码中使用
+
+```python
+from main import OpportunityAnalysisInput, analyze_opportunities
+
+# 创建输入对象
+input_data = OpportunityAnalysisInput(
+    construction_direction="市政工程",
+    customer_type="国企",
+    business_status="意向阶段"
+)
+
+# 调用分析函数
+result = await analyze_opportunities(input_data)
+
+# 处理结果
+for opportunity in result.opportunities:
+    print(f"公司名称: {opportunity.company_name}")
+    print(f"项目信息: {opportunity.project_info}")
+    # ... 其他信息
+```
+
+## 项目结构
+
+```
+cdconstructionop-agent-skill/
+├── main.py                    # 项目入口文件
+├── config.json               # Agent Skill配置文件
+├── requirements.txt          # 项目依赖包列表
+├── .env.example             # 环境变量配置模板
+├── .env                     # 环境变量配置文件（需要自行创建）
+├── README.md                # 项目说明文档
+├── src/                     # 源代码目录
+│   ├── core.py              # 核心分析逻辑实现
+│   ├── utils.py             # 工具模块，提供网络搜索和信息验证功能
+│   ├── model_config.py      # 大模型配置文件
+│   ├── llm_client.py        # 大模型客户端，支持国内主流大模型
+│   └── env_loader.py        # 环境变量加载工具
+├── tests/                   # 测试代码目录
+│   └── test_skill.py        # 测试文件
+└── venv/                    # Python虚拟环境目录
+```
+
+## 依赖项
+
+- Python >= 3.7
+- pydantic
+- aiohttp
+- httpx
+
+## 注意事项
+
+- 本项目为AI Agent Skill的标准结构实现
+- 实际部署时需连接大模型API以获得更准确的分析结果
+- 所有网络链接仅为示例，实际应用中需替换为真实链接
+- 商机分析结果仅供参考，实际决策需进一步调研验证
